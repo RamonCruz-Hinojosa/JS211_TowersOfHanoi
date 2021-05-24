@@ -2,6 +2,7 @@
 
 const assert = require("assert");
 const readline = require("readline");
+const { start } = require("repl");
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -18,9 +19,10 @@ const rl = readline.createInterface({
 
 let stacks = {
   a: [4, 3, 2, 1],
-  b: [],
+  b: [], // 1 2
   c: [],
 };
+const winCondition = JSON.stringify(stacks.a);
 
 // Start here. What is this function doing?
 const printStacks = () => {
@@ -30,7 +32,7 @@ const printStacks = () => {
 };
 
 // Next, what do you think this function should do?
-const movePiece = () => {
+const movePiece = (startStack, endStack) => {
   // Your code here
   // use array methods to move a number from one array to the next
   let start = stacks[startStack].pop();
@@ -38,37 +40,43 @@ const movePiece = () => {
 };
 
 // Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
-const isLegal = () => {
+const isLegal = (startStack, endStack) => {
   // Your code here
   // if statement to check if the piece being moved can go where the player is trying to place it.
-  if (
-    stacks.startStack[startStack.length - 1] <
-      stacks.endStack[endStack.length - 1] ||
-    stacks[endStack] === []
-  ) {
-    return true;
-  } else {
+  const start = stacks[startStack];
+  const end = stacks[endStack];
+  if (start.length === 0) {
     return false;
+  } else if (end.length === 0) {
+    return true;
+  } else if (start[start.length - 1] < end[end.length - 1]) {
+    return true;
   }
+
+  return false;
 };
 
 // What is a win in Towers of Hanoi? When should this function run?
 const checkForWin = () => {
   // Your code here
   // another if statement checking if tower that the pieces did not start on has the pieces in the correct order
-  if (
-    stacks === { a: [], b: [4, 3, 2, 1], c: [] } ||
-    stacks === { a: [], b: [], c: [4, 3, 2, 1] }
-  ) {
-    return true;
-  } else {
-    return false;
+  for (const key in stacks) {
+    if (JSON.stringify(stacks[key]) === winCondition) {
+      return true;
+    }
   }
+
+  return false;
 };
 
 // When is this function called? What should it do with its argument?
 const towersOfHanoi = (startStack, endStack) => {
   // Your code here
+  if (isLegal(startStack, endStack)) {
+    movePiece(startStack, endStack);
+  }
+
+  return checkForWin();
 };
 
 const getPrompt = () => {
