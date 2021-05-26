@@ -30,7 +30,7 @@ const printStacks = () => {
   console.log("b: " + stacks.b);
   console.log("c: " + stacks.c);
 };
-
+// MY CODE PLANNING IS ALL ON THIS PAGE MIXED IN WITH THE FUNCTIONS. IT'S KINDA UGLY SORRY.
 // Next, what do you think this function should do?
 const movePiece = (startStack, endStack) => {
   // Your code here
